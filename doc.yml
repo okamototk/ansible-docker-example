@@ -1,0 +1,13 @@
+- name: Docker Connection Test 
+  hosts: containers
+  tasks: 
+  # UbuntuのDockerイメージはaptタスク実行に必要な
+  # python-aptがないためインストール
+  - stat: path=/usr/lib/python2.7/dist-packages/apt
+    register: apt
+  - shell: apt-get install -y python-apt
+    when: apt.stat.exists == False
+
+  # ここからタスクを記載
+  - apt: name=wget state=installed
+
